@@ -9,7 +9,7 @@ final.table.df        <- final.table.df[-c(10, 9, 7)] # mõnda veergu pole vaja
 split.url  <- "http://www.vohandumaraton.ee/maraton/index2016.php?act=vahed"
 tables <- readHTMLTable(split.url)
 split.table.df <- tables[[2]]
-split.table.df <- split.table.df[-3] # drop class
+split.table.df <- split.table.df[-3] # drop first instance of class
 
 compl.df <- merge(final.table.df, split.table.df, by = "Stardinr")
 
@@ -21,3 +21,5 @@ compl.df <- compl.df[order(compl.df$Jrk),]
 
 names.df <- compl.df[c(1,6)]
 compl.df$Nimed <- substr(compl.df$Nimed, 1, 30) 
+
+K2MIX <- compl.df[which(compl.df$Klass == "K2MIX"),]

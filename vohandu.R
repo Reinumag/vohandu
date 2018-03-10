@@ -1,4 +1,8 @@
 library(XML)
+library(lubridate)
+
+git2r::branch_target(git2r::head(git2r::repository(getwd())))
+
 final.url <- "http://www.vohandumaraton.ee/maraton/index2016.php?act=finish"
 tables <- readHTMLTable(final.url)
 
@@ -23,3 +27,11 @@ names.df <- compl.df[c(1,6)]
 compl.df$Nimed <- substr(compl.df$Nimed, 1, 30) 
 
 K2MIX <- compl.df[which(compl.df$Klass == "K2MIX"),]
+K2MIX$Aeg <- K2MIX$FINISH
+
+K2MIX$Aeg <- hms(as.character(K2MIX$Aeg))
+
+drops <- c("Koht","Koht klassis", "Jrk")
+K2MIX <- K2MIX[, !(names(K2MIX) %in% drops)]
+
+K2MIX[,6:12] <- hms(as.character(K2MIX[,6:12]))
